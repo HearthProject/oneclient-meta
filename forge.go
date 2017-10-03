@@ -16,13 +16,8 @@ const FORGE_LIST = "http://files.minecraftforge.net/maven/net/minecraftforge/for
 func forgeMeta() {
 	os.RemoveAll(MAIN + FORGE)
 	os.RemoveAll(MAIN + NETFORGE)
-	if err := os.MkdirAll(MAIN+NETFORGE, 0700); err != nil {
-		panic(err)
-	}
-	if err := os.MkdirAll(MAIN+FORGE, 0700); err != nil {
-		panic(err)
-	}
-
+	utils.MakeDir(MAIN+NETFORGE)
+	utils.MakeDir(MAIN+FORGE)
 	data, err := utils.GetString(FORGE_LIST)
 	if err != nil {
 		panic(err)
@@ -35,6 +30,8 @@ func forgeMeta() {
 
 	forgeParse(index)
 }
+
+
 
 func forgeParse(index ForgeIndex) {
 

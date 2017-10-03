@@ -3,9 +3,9 @@ package utils
 import (
 	"os"
 	"net/http"
-	"io"
 	"io/ioutil"
 	"errors"
+	"io"
 )
 
 func DownloadFile(filepath string, url string) (err error) {
@@ -28,6 +28,7 @@ func DownloadFile(filepath string, url string) (err error) {
 
 	return nil
 }
+
 
 func GetString(url string) (string, error) {
 	var client http.Client

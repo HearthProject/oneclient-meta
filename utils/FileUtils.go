@@ -2,7 +2,6 @@ package utils
 
 import (
 	"bufio"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -13,12 +12,9 @@ import (
 )
 
 //ReadStringFromFile reads a string from a file
-func ReadStringFromFile(file string) string {
+func ReadStringFromFile(file string) (string, error) {
 	b, err := ioutil.ReadFile(file)
-	if err != nil {
-		fmt.Print(err)
-	}
-	return string(b)
+	return string(b), err
 }
 
 //WriteStringToFile writes a string to a file
@@ -29,7 +25,8 @@ func WriteStringToFile(str string, file string) {
 //AppendStringToFile appends a string to a file, or creates a new file with the string if the file does not exist
 func AppendStringToFile(str string, file string) {
 	if FileExists(file) {
-		WriteStringToFile(ReadStringFromFile(file)+"\n"+str, file)
+		read, _ := ReadStringFromFile(file)
+		WriteStringToFile(read+"\n"+str, file)
 	} else {
 		WriteStringToFile(str, file)
 	}
@@ -64,7 +61,9 @@ func ReadLinesFromFile(fileName string) []string {
 }
 
 func MakeDir(fileName string) {
-	os.MkdirAll(fileName,os.ModePerm)
+	if err := os.MkdirAll(fileName, os.ModePerm); err != nil {
+		panic(err)
+	}
 }
 
 func GetRunPath() string {
@@ -77,7 +76,7 @@ func GetRunPath() string {
 }
 
 func DeleteDir(dir string) error {
-	if ! FileExists(dir){
+	if ! FileExists(dir) {
 		return errors.New("File not found")
 	}
 	d, err := os.Open(dir)
